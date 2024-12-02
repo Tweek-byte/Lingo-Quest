@@ -1,0 +1,74 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.venv/
+.ENV/
+env.bak/
+venv.bak/
+
+# Django specific
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
+local_settings.py
+
+# If you are using MySQL, PostgreSQL, or other databases, add your database files here
+
+# Ignore environment variable files
+*.env
+
+# VS Code files (optional, if you're using Visual Studio Code)
+.vscode/
+
+# PyCharm files (optional, if you're using PyCharm)
+.idea/
+
+# MacOS files
+.DS_Store
+
+# Windows files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Node.js files (if you have any frontend dependencies managed by Node.js)
+node_modules/
+
+# Test coverage
+htmlcov/
+
+# Jupyter Notebook checkpoints (if using Jupyter for documentation or experiments)
+.ipynb_checkpoints
+
+# Migrations (untracked migrations during development)
+*/migrations/*.py
+!*/migrations/__init__.py
+
+# Pipenv
+Pipfile
+Pipfile.lock
+
+# Python virtual environments
+pyvenv.cfg
+
+# Other
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/

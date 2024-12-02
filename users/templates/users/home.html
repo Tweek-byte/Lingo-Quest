@@ -1,0 +1,58 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block title %}Welcome to Language Games{% endblock %}
+
+{% block content %}
+<div class="container text-center">
+    <h1 class="mb-5">Welcome to Lingo Quest</h1>
+    <p class="lead">Explore fun and engaging mini-games to improve your English language skills!</p>
+
+    <div class="row">
+        <!-- Phonetic Transcription Game Card -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <img src="{% static 'images/Phonetic.png' %}" class="card-img-top" alt="Phonetic Transcription Game">
+                <div class="card-body">
+                    <h5 class="card-title">Phonetic Transcription</h5>
+                    <p class="card-text">Test your skills in phonetic transcription. It's fun and educational!</p>
+                    <a href="{% url 'create_game' %}" class="btn btn-primary">Play Now</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Other Game Card (Placeholder) -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Game 2">
+                <div class="card-body">
+                    <h5 class="card-title">Game 2</h5>
+                    <p class="card-text">Soon...</p>
+                    <a href="#" class="btn btn-secondary">Coming Soon</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Another Game Card (Placeholder) -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Game 3">
+                <div class="card-body">
+                    <h5 class="card-title">Game 3</h5>
+                    <p class="card-text">Soon...</p>
+                    <a href="#" class="btn btn-secondary">Coming Soon</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        {% if user.is_authenticated %}
+            <a href="{% url 'profile' %}" class="btn btn-info me-2">Go to Profile</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="btn btn-primary me-2">Login</a>
+            <a href="{% url 'register' %}" class="btn btn-success">Register</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

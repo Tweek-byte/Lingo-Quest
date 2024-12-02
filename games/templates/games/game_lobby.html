@@ -1,0 +1,40 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Game Lobby: {{ game_session.name }}{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="card shadow p-4">
+        <h2 class="mb-4">Game Lobby: {{ game_session.name }}</h2>
+
+        <!-- Displaying Game ID with a descriptive label -->
+        <p><strong><i class="bi bi-gem"></i> Game ID:</strong> {{ game_session.id }}</p>
+
+        <p><strong>Host:</strong> {{ game_session.host.username }}</p>
+
+        <h3 class="mt-3">Players:</h3>
+        <ul class="list-group">
+            {% for player in players %}
+                <li class="list-group-item">
+                    <i class="bi bi-person-circle"></i> {{ player.user.username }}
+                </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Display 'Start Game' button only for the host -->
+        {% if user == game_session.host %}
+            <div class="mt-4">
+                <form action="{% url 'start_game' game_session.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success">Start Game</button>
+                </form>
+            </div>
+        {% endif %}
+
+        <!-- Button to go back to the home page -->
+        <div class="mt-4">
+            <a href="/" class="btn btn-secondary">Back to Home</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,249 @@
+{% extends 'users/base.html' %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game: {{ game_session.name }}</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        h2 {
+            margin: 0;
+        }
+        .content {
+            padding: 20px;
+        }
+        .game-info {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .game-info p {
+            font-size: 18px;
+        }
+        .keyboard {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .key {
+            padding: 15px;
+            background-color: #ddd;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+        .key:hover {
+            background-color: #bbb;
+        }
+        .key:active {
+            background-color: #aaa;
+        }
+        .form-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .form-container label {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .form-container input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+        }
+        .form-container button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        .form-container button:hover {
+            background-color: #45a049;
+        }
+        .feedback {
+            text-align: center;
+            font-weight: bold;
+            color: rgb(15, 90, 201);
+        }
+        .feedback.error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>Game: {{ game_session.name }}</h2>
+    </header>
+
+    <div class="content">
+        <!-- Game Info -->
+        <div class="game-info">
+            <p>Word to transcribe: <strong>{{ word.text }}</strong></p>
+        </div>
+
+        <!-- Transcription Form -->
+        <div class="form-container">
+            <form id="transcription-form" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="word_id" value="{{ word.id }}">
+                <label for="transcription">Transcription:</label>
+                <input type="text" id="transcription" name="transcription" required>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+
+        <!-- Keyboard -->
+        <div class="keyboard">
+            <!-- Vowels Section -->
+            <h4>Vowels</h4>
+            <div class="key">i</div>
+            <div class="key">ɪ</div>
+            <div class="key">e</div>
+            <div class="key">ɛ</div>
+            <div class="key">æ</div>
+            <div class="key">ɑ</div>
+            <div class="key">ɒ</div>
+            <div class="key">ɔ</div>
+            <div class="key">u</div>
+            <div class="key">ʊ</div>
+            <div class="key">ʌ</div>
+            <div class="key">ə</div>
+            <div class="key">ɜ</div>
+            <div class="key">aɪ</div>
+            <div class="key">aʊ</div>
+            <div class="key">oʊ</div>
+            <div class="key">eɪ</div>
+            <div class="key">ɔɪ</div>
+
+            <!-- Consonants Section -->
+            <h4>Consonants</h4>
+            <div class="key">p</div>
+            <div class="key">b</div>
+            <div class="key">t</div>
+            <div class="key">d</div>
+            <div class="key">k</div>
+            <div class="key">g</div>
+            <div class="key">f</div>
+            <div class="key">v</div>
+            <div class="key">θ</div>
+            <div class="key">ð</div>
+            <div class="key">s</div>
+            <div class="key">z</div>
+            <div class="key">ʃ</div>
+            <div class="key">ʒ</div>
+            <div class="key">m</div>
+            <div class="key">n</div>
+            <div class="key">ŋ</div>
+            <div class="key">h</div>
+            <div class="key">l</div>
+            <div class="key">r</div>
+            <div class="key">w</div>
+            <div class="key">j</div>
+
+            <!-- Diacritics Section -->
+            <h4>Diacritics</h4>
+            <div class="key">ˈ</div> <!-- Primary stress -->
+            <div class="key">ˌ</div> <!-- Secondary stress -->
+            <div class="key">ː</div> <!-- Length mark -->
+            <div class="key">ʔ</div> <!-- Glottal stop -->
+        </div>
+
+        <!-- Feedback -->
+        <p id="feedback" class="feedback"></p>
+    </div>
+
+    <script>
+        // JavaScript to handle phonetic keyboard input
+        document.querySelectorAll('.key').forEach((key) => {
+            key.addEventListener('click', () => {
+                const transcriptionField = document.getElementById('transcription');
+                transcriptionField.value += key.textContent; // Append the clicked symbol to the transcription field
+                transcriptionField.focus(); // Focus back to the input
+            });
+        });
+
+        // Form submission with time tracking
+        const startTime = new Date();
+        document.getElementById('transcription-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const endTime = new Date();
+            const timeTaken = (endTime - startTime) / 1000;
+
+            const formData = new FormData(this);
+            formData.append('time_taken', timeTaken);
+
+            fetch("{% url 'submit_transcription' game_session.id %}", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    const feedback = document.getElementById('feedback');
+                    if (data.success) {
+                        if (data.game_over) {
+                            // Redirect to the scoreboard if the game is over
+                            window.location.href = data.redirect_url;
+                        } else {
+                            // Load the next word
+                            document.getElementById('transcription').value = ''; // Clear the transcription input
+                            feedback.innerHTML = "Loading the next word...";
+                            setTimeout(() => {
+                                document.querySelector('p strong').textContent = data.next_word; // Update word to transcribe
+                                document.querySelector('input[name="word_id"]').value = data.word_id; // Update word ID
+                                feedback.innerHTML = ""; // Clear feedback
+                            }, 1500);
+                        }
+                    } else {
+                        feedback.classList.add("error");
+                        feedback.innerHTML = data.message || "Submission failed. Please try again.";
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+        });
+    </script>
+
+</body>
+</html>
+{% endblock %}
