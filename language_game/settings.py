@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'games',
-    'profiles',
     'widget_tweaks',
 ]
 
@@ -87,6 +86,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+LOGIN_URL = '/login/'
 
 
 # Password validation
